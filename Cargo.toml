@@ -1,0 +1,25 @@
+[package]
+name = "sfind"
+version = "0.1.0"
+authors = ["Francesco Banconi <francesco.banconi@canonical.com>"]
+edition = "2018"
+description = "Quickly find accounts and related objects in Salesforce"
+license-file = "LICENSE"
+readme = "README.md"
+repository = "https://github.com/frankban/sfind/"
+keywords = ["salesforce"]
+categories = ["command-line-utilities"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+app_dirs = "1.2.1"
+async-trait = "0.1.41"
+colored_json = "2.1.0"
+edit = "0.1.2"
+prettytable-rs = "0.8.0"
+rustforce = "0.1.4"
+serde = "1.0.117"
+serde_json = "1.0.59"
+tokio = { version = "0.2.22", features = ["full"] }
+toml = "0.5.7"
