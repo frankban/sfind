@@ -49,7 +49,7 @@ impl Config {
                 };
 
                 // Save the new configuration to file.
-                match wtite_file(&path, &contents) {
+                match write_file(&path, &contents) {
                     Ok(_) => Ok(()),
                     Err(err) => Err(Error {
                         message: format!("cannot write config: {}", err),
@@ -91,12 +91,13 @@ fn config_path() -> Result<PathBuf, AppDirsError> {
 
 /// Write the given contents in the file at the given path.
 /// Create directories if required.
-fn wtite_file(path: &PathBuf, contents: &str) -> Result<(), io::Error> {
+fn write_file(path: &PathBuf, contents: &str) -> Result<(), io::Error> {
     fs::create_dir_all(path.parent().unwrap())?;
     fs::write(path, contents)?;
     Ok(())
 }
 
+/// The raw configuration for the app.
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 struct FileConf {
     pub fields: Vec<String>,
