@@ -2,7 +2,7 @@
 /// output format.
 pub fn parse(args: Vec<String>) -> (Action, Format) {
     let mut args = args.into_iter().skip(1);
-    let err = Action::Err(String::from("usage: sfind <arg>: see sfind help"));
+    let err = Action::Err(String::from("usage: sfind <arg>: see `sfind help`"));
 
     let arg = match args.next() {
         None => return (err, Format::Tabular),
@@ -102,7 +102,7 @@ mod tests {
     fn parse_error_no_args() {
         let args = vec![String::from("command")];
         let (action, _) = parse(args);
-        let msg = String::from("usage: sfind <arg>: see sfind help");
+        let msg = String::from("usage: sfind <arg>: see `sfind help`");
         assert_eq!(action, Action::Err(msg));
     }
 
@@ -114,7 +114,7 @@ mod tests {
             String::from("bad-wolf"),
         ];
         let (action, _) = parse(args);
-        let msg = String::from("usage: sfind <arg>: see sfind help");
+        let msg = String::from("usage: sfind <arg>: see `sfind help`");
         assert_eq!(action, Action::Err(msg));
     }
 
