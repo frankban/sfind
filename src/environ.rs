@@ -50,7 +50,11 @@ pub struct Error {
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "missing environment variable {}", self.var)
+        write!(
+            f,
+            "missing environment variable {}: see `sfind help`",
+            self.var
+        )
     }
 }
 
