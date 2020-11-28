@@ -1,5 +1,5 @@
-/// Parse the given args and returns the action to be taken by the tool, and the
-/// output format.
+/// Parse the given args and returns the action to be taken, and the output
+/// format.
 pub fn parse(args: Vec<String>) -> (Action, Format) {
     let mut args = args.into_iter().skip(1);
     let err = Action::Err(String::from("usage: sfind <arg>: see `sfind help`"));
@@ -21,7 +21,7 @@ pub fn parse(args: Vec<String>) -> (Action, Format) {
     (action, format)
 }
 
-/// An action to be executed by the tool.
+/// An action to be executed by the application.
 #[derive(Debug, PartialEq)]
 pub enum Action {
     /// Find something in Salesforce.
@@ -34,7 +34,7 @@ pub enum Action {
     Err(String),
 }
 
-/// Format represents how to format the returned information.
+/// How to format the returned information.
 #[derive(Debug, PartialEq)]
 pub enum Format {
     Tabular,
