@@ -5,7 +5,11 @@ opportunities and contacts.
 
 ## Installation
 
-Run `cargo install sfind`.
+Binaries can be downloaded from the
+[releases page](https://github.com/frankban/sfind/releases).
+
+Alternatively, run `cargo build --release` to build the application from
+sources.
 
 ## Usage
 
