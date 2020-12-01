@@ -310,6 +310,6 @@ fn add_date(table: &mut Table, label: &str, date: &str) {
 fn unwrap_related<T>(r: &Option<Related<T>>) -> Vec<&T> {
     match r {
         Some(related) => related.records.iter().collect(),
-        None => vec!{}
+        None => vec![],
     }
 }
