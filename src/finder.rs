@@ -393,9 +393,9 @@ mod tests {
                 billing_address: Default::default(),
                 created_date: String::from("name"),
                 last_modified_date: Some(String::from("name")),
-                assets: sf::Related { records: vec![] },
-                contacts: sf::Related { records: vec![] },
-                opportunities: sf::Related { records: vec![] },
+                assets: None,
+                contacts: None,
+                opportunities: None,
                 extra: HashMap::new(),
             }
         }

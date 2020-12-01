@@ -126,15 +126,17 @@ impl Client for rustforce::Client {
         // TODO(frankban): rather than one query per opportunity, this is doable
         // with only one query for getting all line items, mapped in code.
         let fields = opportunity_line_item_fields.join(", ");
-        for opp in acc.opportunities.records.iter_mut() {
-            let q = format!(
-                "SELECT {fields} FROM OpportunityLineItem
-                WHERE OpportunityId = '{id}'",
-                fields = fields,
-                id = opp.id,
-            );
-            let res: QueryResponse<LineItem> = self.query(&q).await?;
-            opp.line_items = res.records;
+        if acc.opportunities.is_some() {
+            for opp in acc.opportunities.as_mut().unwrap().records.iter_mut() {
+                let q = format!(
+                    "SELECT {fields} FROM OpportunityLineItem
+                    WHERE OpportunityId = '{id}'",
+                    fields = fields,
+                    id = opp.id,
+                );
+                let res: QueryResponse<LineItem> = self.query(&q).await?;
+                opp.line_items = res.records;
+            }
         }
         Ok(acc)
     }
@@ -187,14 +189,14 @@ pub struct Account {
     pub id: String,
     pub name: String,
     pub account_number: Option<String>,
-    pub billing_address: Address,
+    pub billing_address: Option<Address>,
 
     pub created_date: String,
     pub last_modified_date: Option<String>,
 
-    pub assets: Related<Asset>,
-    pub contacts: Related<Contact>,
-    pub opportunities: Related<Opportunity>,
+    pub assets: Option<Related<Asset>>,
+    pub contacts: Option<Related<Contact>>,
+    pub opportunities: Option<Related<Opportunity>>,
 
     #[serde(flatten)]
     pub extra: HashMap<String, Value>,
