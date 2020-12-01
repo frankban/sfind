@@ -5,7 +5,7 @@ use serde_json::Value;
 
 use crate::arg::Format;
 use crate::error::Error;
-use crate::sf::{Account, Address};
+use crate::sf::{Account, Address, Related};
 
 /// Print the given `Account` object based on the given `Format`.
 pub fn print(acc: &Account, format: Format) -> Result<(), Error> {
@@ -61,7 +61,7 @@ fn print_tabular(acc: &Account) {
     ]));
     table.add_row(Row::new(vec![
         Cell::new("Address").style_spec(field_style),
-        Cell::new(&format_address(&acc.billing_address)),
+        Cell::new(&format_address(acc.billing_address.as_ref())),
     ]));
     add_dates(
         &mut table,
@@ -72,7 +72,7 @@ fn print_tabular(acc: &Account) {
     table.printstd();
 
     // Print contacts.
-    for (num, contact) in acc.contacts.records.iter().enumerate() {
+    for (num, contact) in unwrap_related(&acc.contacts).iter().enumerate() {
         let mut table = Table::new();
         table.set_format(format);
         table.set_titles(Row::new(vec![
@@ -101,7 +101,7 @@ fn print_tabular(acc: &Account) {
     }
 
     // Print assets.
-    for (num, asset) in acc.assets.records.iter().enumerate() {
+    for (num, asset) in unwrap_related(&acc.assets).iter().enumerate() {
         let mut table = Table::new();
         table.set_format(format);
         table.set_titles(Row::new(vec![
@@ -157,7 +157,7 @@ fn print_tabular(acc: &Account) {
     }
 
     // Print opportunities.
-    for (num, opp) in acc.opportunities.records.iter().enumerate() {
+    for (num, opp) in unwrap_related(&acc.opportunities).iter().enumerate() {
         let mut table = Table::new();
         table.set_format(format);
         table.set_titles(Row::new(vec![
@@ -247,7 +247,11 @@ fn print_tabular(acc: &Account) {
     }
 }
 
-fn format_address(addr: &Address) -> String {
+fn format_address(addr: Option<&Address>) -> String {
+    if addr.is_none() {
+        return String::from("<missing>");
+    }
+    let addr = addr.unwrap();
     let mut table = Table::new();
     table.set_format(format::FormatBuilder::new().padding(0, 1).build());
     for (label, v) in &[
@@ -301,4 +305,11 @@ fn add_date(table: &mut Table, label: &str, date: &str) {
         Cell::new(label).style_spec("Fc"),
         Cell::new(&replace(date)).style_spec("Fy"),
     ]));
+}
+
+fn unwrap_related<T>(r: &Option<Related<T>>) -> Vec<&T> {
+    match r {
+        Some(related) => related.records.iter().collect(),
+        None => vec!{}
+    }
 }
